@@ -1,0 +1,16 @@
+hive130				hive131				hive132
+
+zookeeper			zookeeper			zookeeper
+
+NameNode			
+
+DataNode			DataNode			DataNode
+
+										SecondaryNameNode
+					
+					ResourceManager
+
+NodeManager			NodeManager			NodeManager
+
+JobHistoryServer
+

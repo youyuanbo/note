@@ -1,0 +1,14 @@
+安装部署
+	Zookeeper、Hadoop、jdk
+hadoop
+	第一台机器			第二台机器		第三台机器
+	NameNode			NameNode	
+	DataNode			DataNode		DataNode
+	Zookeeper			Zookeeper		Zookeeper
+						ResourceManager	ResourceManager
+	NodeManager			NodeManager		NodeManager
+配置文件
+	hadoop-env.sh	
+	core-site.xml
+	hdfs-site.xml
+	yarn-site.xml

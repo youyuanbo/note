@@ -1,0 +1,121 @@
+GitHub远程仓库
+	UserName： ug.python.linux@gmail.com
+	Pssword：Chen19960623+
+一、配置远程仓库
+	1、启动Git Bash
+	2、在出现的命令行窗口中执行命令，生成SSH key
+		ssh-keygen -t rsa -C "ug.linux.python@gmail.com"
+	3、随后会询问用户，该密钥保存的位置
+		默认：/c/Users/centos/.ssh/id_rsa
+	4、两次输入保护密码（不显示）
+		www.github.com
+	5、将公钥配置在GitHub上
+		在c/Users/centos/.ssh/下存在两个文件：
+		id_rsa.pub：公钥，保存在外部使用
+		id_rsa：私钥，作为本机的标识
+		进入www.github.com——》settings——》SSH and GPG keys——》New SSH key
+		填写title后——》点击Add SSH Key
+		配置完成
+	6、新建仓库
+		填写仓库名称与仓库描述信息，并选择创建共有还是私有
+		点击创建后，返回仓库的访问地址：
+			SSH：git@github.com:youyuanbo/AlgorithmCpp.git（有了SSH Key 直接连接）
+			HTTPS：https://github.com/youyuanbo/AlgorithmCpp.git（如果是公开的仓库，所有人都可以访问）
+			
+二、远程仓库维护
+	将本地代码同步到远程仓库中
+	1、建立客户端与服务器端的连接地址信息
+		git remote add origin git@github.com:youyuanbo/AlgorithmCpp.git
+	2、将本地代码全部推送到服务器端(需要先提交到版本库)
+		git push -u origin master
+		
+三、克隆仓库
+	git clone git@github.com:youyuanbo/SSM-CRUD.git
+	git remote add origin git@github.com:youyuanbo/SSM-CRUD.git
+	删除连接：
+		git remote rm origin
+四、分支的创建与合并
+	1、查看当前仓库中可用的分支
+		git branch
+		返回的结果中，使用“*”来标记当前所处的分支
+	2、创建一个新的分支
+		git branch develop
+	3、切换分支
+		git checkout develop
+		创建并切换分支：
+			git checkout -b develop
+	4、在master分支下，合并其他分支
+		git checkout master
+		git merge develop`
+	5、与远程仓库合并master分支与develop分支
+		git push -u origin master
+		git push -u origin develop
+	6、删除分支
+		本地：
+			git branch -d develop
+		远程：
+			直接删除：git push origin --delete develop
+			推送一个空的分支：
+五、bug分支
+	临时挂起当前分支，去解决其他的问题。
+	1、暂存当前分支
+		git stash
+	2、查看暂时挂起的工作区
+		git stash list
+	3、恢复挂起的工作区
+		分布完成：
+			1、恢复：git stash apply
+			2、清除：git stash drop
+		一步完成：从暂挂区中恢复工作区，然后删除暂挂区：
+			git stash pop
+六、feature分支
+	强制删除分支：
+		git branch -D feature
+七、补丁
+	对一个文件仅仅做了较小的修改，不必把整个文件提交到服务器上，将修改过的部分作为补丁存在。
+	git diff: 可以实现前后两个文件内容的对比。
+	1、在master分支上新建一个文件
+	2、在dev分支上修改此文件，并提交到版本库
+	3、在dev分支上，使用命令查看dev分支与master分支关于此文件的区别
+		git diff master>patch
+		执行结果：将会生成一个patch文件
+	4、在master分支上运用patch文件
+		git apply patch
+	5、续（1，2），在dev分支上修改并保存文件后，通知文件本人(master分支)
+		git format-patch -M master
+		
+	6、在文件本人（master分支）收到patch后，确认需要修改，并使用以下命令修改文件
+		git am patch(补丁文件名)
+	7、随后由文件本人提交代码
+		git add .
+		git commit -m "Apply patch"
+
+八、多人协同开发
+
+九、Git标签管理
+	设置标签：
+		git tag v1.0
+	查看所有的标签：
+		git tag
+	将本地标签推送到服务器上：
+		单个：git push origin v1.0
+		批量：git push origin --tags
+	删除分支：
+		本地：git tag -d v1.0
+		远程：git push origin:refs/tags/v1.0
+		
+十、使用CopSSH搭建自己的Git服务器
+	1、安装CopSSH
+		用户名：Copssh
+		密码：www.Copssh.com
+	2、在计算机中新增用户：
+		用户名：coder_yyb
+		密码：coder_yyb
+	3、打开CopSSH的控制面板
+		将coder_yyb用户配置到CopSSH之中。
+		在CopSSH面板中，选择Users——》Add——》
+	
+
+			
+
+	

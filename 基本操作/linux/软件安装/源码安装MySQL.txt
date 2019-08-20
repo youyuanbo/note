@@ -1,0 +1,94 @@
+在Linux下使用源码安装MySQL
+
+1、将源码包上传到/opt目录下
+	/opt/software
+2、解压源码包：
+	tar -zxvf MysqlXXX -C 解压目录
+	tar -zxvf mysql-5.6.14.tar.gz -C /opt/module	
+3、进入到源码包中
+	1、使用yum安装编译环境
+		yum -y install make gcc-c++ bison-devel ncurses-devel
+	2、编译源码：
+		精简版
+			cmake \
+			 -DCMAKE_INSTALL_PREFIX=/usr/local/mysql \
+			 -DMYSQL_UNIX_ADDR=/usr/local/mysql/mysql.sock \
+			 -DDEFAULT_CHARSET=utf8 \
+			 -DDEFAULT_COLLATION=utf8_general_ci \
+			 -DWITH_INNOBASE_STORAGE_engine=1 \
+			 -DWITH_ARCHIVE_STORAGE_ENGINE=1 \
+			 -DWITH_BLACKHOLE_STORAGE_ENGINE=1 \
+			 -DMYSQL_DATADIR=/data/mysqldb \
+			 -DMYSQL_TCP_PORT=3306 \
+			 -DENABLE_DOWNLOADS=1 .
+		完整版
+			cmake \
+			-DCMAKE_INSTALL_PREFIX=/usr/local/mysql  \              [MySQL安装的根目录]
+			-DMYSQL_DATADIR=/mydata/mysql/data  \                   [MySQL数据库文件存放目录]
+			-DSYSCONFDIR=/etc \                                     [MySQL配置文件所在目录]
+			-DMYSQL_USER=mysql \                                    [MySQL用户名]      
+			-DWITH_MYISAM_STORAGE_ENGINE=1 \                        [MySQL的数据库引擎]
+			-DWITH_INNOBASE_STORAGE_ENGINE=1 \                      [MySQL的数据库引擎]
+			-DWITH_ARCHIVE_STORAGE_ENGINE=1 \                       [MySQL的数据库引擎]
+			-DWITH_MEMORY_STORAGE_ENGINE=1 \                        [MySQL的数据库引擎]
+			-DWITH_READLINE=1 \                                     [MySQL的readline library]
+			-DMYSQL_UNIX_ADDR=/var/run/mysql/mysql.sock \           [MySQL的通讯目录]
+			-DMYSQL_TCP_PORT=3306 \                                 [MySQL的监听端口]
+			-DENABLED_LOCAL_INFILE=1 \                              [启用加载本地数据]
+			-DENABLE_DOWNLOADS=1 \                                  [编译时允许自主下载相关文件]
+			-DWITH_PARTITION_STORAGE_ENGINE=1  \
+			-DEXTRA_CHARSETS=all \                                  [使MySQL支持所有的扩展字符]
+			-DDEFAULT_CHARSET=utf8 \                                [设置默认字符集为utf8]
+			-DDEFAULT_COLLATION=utf8_general_ci \                   [设置默认字符校对]
+			-DWITH_DEBUG=0 \                                        [禁用调试模式]
+			-DMYSQL_MAINTAINER_MODE=0 \
+			-DWITH_SSL:STRING=bundled \                             [通讯时支持ssl协议]
+			-DWITH_ZLIB:STRING=bundled                              [允许使用zlib library] \
+			-DDOWNLOAD_BOOST=1 \
+			-DWITH_BOOST=/root/mysql/boost_1_59_0
+		
+	3、编译并安装mysql
+		make && make install
+4、创建mysql组与mysql用户
+	groupadd mysql
+	useradd -g mysql mysql
+5、修改/usr/local/mysql的所有者与所属组
+	chown -R mysql:mysql /usr/local/mysql
+6、初始化MySQL数据库
+	cd /usr/local/mysql
+	scripts/mysql_install_db --basedir=/usr/local/mysql --datadir=/usr/local/mysql/data --user=mysql
+	出错：可能会缺少依赖
+	yum install perl-ExtUtils-Embed -y
+	yum install ‘perl(Data::Dumper)’ -y
+	
+7、配置mysql
+	将/etc/my.cnf 改为/etc/my.cnf.bak
+		mv /etc/my.cnf /etc/my.cnf.bak
+	注册mysql服务
+		cp support-files/mysql.server /etc/init.d/mysql
+	将mysql服务设置为开机自启
+		chkconfig mysql on
+	启动mysql服务
+		service mysql start
+	更改root账户的密码：
+		1、进入到/usr/local/mysql/bin
+			cd /usr/local/mysql/bin
+		2、进入mysql
+			./mysql -u root -p
+			提示输入密码，直接回车
+		3、切换到mysql数据库
+			use mysql
+		4、更新密码
+			update user set Password=password("新密码") where user='root';
+			update user set Password=password("123456") where user='root';
+		5、刷新权限
+			flush privileges;
+		6、退出mysql，并重新登录
+			exit
+			./mysql -u root -p 
+	配置mysql全部路径
+		vim /etc/profile
+		
+	
+	
+	

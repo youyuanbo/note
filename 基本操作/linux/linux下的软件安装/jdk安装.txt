@@ -1,0 +1,8 @@
+jdk安装
+1、以普通用户登录到系统
+2、将安装包上传到：/opt/software
+3、解压安装包：software]$ tar -zxvf jdk-7u79-linux-x64.gz -C /opt/modules/
+4、配置环境变量：sudo vim /etc/profile
+	#JAVA_HOME
+	export JAVA_HOME=/opt/modules/jdk1.7.0_79
+	export PATH=$PATH:$JAVA_HOME/bin

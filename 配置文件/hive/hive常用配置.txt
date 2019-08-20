@@ -1,0 +1,47 @@
+hive配置
+	
+	hive-site.xml
+	
+1、执行简单的单列查询时，不执行MapReduce
+	将mininal改为more
+	<property>
+	  <name>hive.fetch.task.conversion</name>
+	  <value>more</value>
+	  <description>
+		Some select queries can be converted to single FETCH task minimizing latency.
+		Currently the query should be single sourced not having any subquery and should not have
+		any aggregations or distincts (which incurs RS), lateral views and joins.
+		1. minimal : SELECT STAR, FILTER on partition columns, LIMIT only
+		2. more    : SELECT, FILTER, LIMIT only (TABLESAMPLE, virtual columns)
+	  </description>
+	</property>
+	
+2、使用hiveserver2时，需要修改的配置
+	<property>
+		<name>hive.server2.thrift.port</name>
+		<value>10000</value>
+		<description>Port number of HiveServer2 Thrift interface.
+		Can be overridden by setting $HIVE_SERVER2_THRIFT_PORT</description>
+	</property>
+	
+	<property>
+		<name>hive.server2.long.polling.timeout</name>
+		<value>5000</value>
+		<description>Time in milliseconds that HiveServer2 will wait, before responding to asynchronous calls that use long polling</description>
+	</property>
+	
+	<property>
+		<name>hive.server2.thrift.bind.host</name>
+		<value>hive130</value>
+		<description>Bind host on which to run the HiveServer2 Thrift interface.
+		Can be overridden by setting $HIVE_SERVER2_THRIFT_BIND_HOST</description>
+	</property> 
+3、谁使用hiveserver2，谁就有权限调度MapReduce
+	<property>
+		<name>hive.server2.enable.doAs</name>
+		<value>false</value>
+		<description>
+		Setting this property to true will have HiveServer2 execute
+		Hive operations as the user making the calls to it.
+		</description>
+	</property>

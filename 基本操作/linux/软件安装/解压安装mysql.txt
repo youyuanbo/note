@@ -1,0 +1,67 @@
+解压安装MySQL
+
+1、将mysql压缩包上传到/opt/software目录下
+2、将mysql解压到/opt/module/目录下
+3、将解压后的mysql移动到/usr/local/mysql目录下
+	mv mysql-5.7.26-el7-x86_64/ /usr/local/mysql
+4、添加mysql组
+	groupadd mysql
+5、添加mysql用户，并设置用户组
+	useradd -g mysql mysql
+6、更改mysql所属组与所有者
+	chown -R mysql:mysql /usr/local/mysql/
+7、初始化数据库
+	1、进入到mysql安装目录
+		cd /usr/local/mysql/
+	2、执行初始化命令
+		执行以下命令，会生成一个初始化密码，请记下次密码
+		bin/mysqld --initialize --user=mysql --basedir=/usr/local/mysql --datadir=/usr/local/mysql/data
+		执行以下命令，root的默认密码为空
+		bin/mysqld --initialize-insecure --user=mysql --basedir=/usr/local/mysql --datadir=/usr/local/mysql/data
+8、
+	bin/mysql_ssl_rsa_setup --datadir=/usr/local/mysql/data
+9、更改mysql配置文件
+	vim /etc/my.cnf
+	
+		[mysqld]
+		character_set_server=utf8
+		init_connect='SET NAMES utf8'
+		basedir=/usr/local/mysql
+		datadir=/usr/local/mysql/data
+		socket=/tmp/mysql.sock
+		lower_case_table_names = 1
+		log-error=/var/log/mysqld.log
+		pid-file=/usr/local/mysql/data/mysqld.pid
+10、注册mysql服务
+	cp /usr/local/mysql/support-files/mysql.server /etc/init.d/mysql
+	
+11、修改mysql服务文件
+	vim /etc/init.d/mysql
+	修改46与47行：	
+		basedir=/usr/local/mysql
+		datadir=/usr/local/mysql/data
+		
+12、启动mysql服务
+	service mysql start
+13、设置开机自启
+	以下两个命令，执行一个即可
+	chkconfig --add mysql
+	chkconfig mysql on
+	
+14、设置mysql快捷方式
+	ln -s /usr/local/mysql/bin/mysql /usr/bin/
+15、 配置环境变量
+	MYSQL_HOME=/usr/local/mysql
+	PATH=$MYSQL_HOME/bin:$PATH
+	export MYSQL_HOME
+	export PATH
+	
+16、更新root密码
+	执行mysql 或者mysql -u root -p命令
+	use mysql
+	SET PASSWORD FOR 'root'@'lsocalhost' = PASSWORD('root');
+	update user set Password = PASSWORD('root') where user='root';
+安装完毕
+
+		
+		

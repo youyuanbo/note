@@ -1,0 +1,88 @@
+Hadoop安装
+1、将安装包上传到：/opt/software
+2、解压安装包：tar -zxvf hadoop-2.7.2.tar.gz -C /opt/modules/
+3、配置环境变量：sudo vim /etc/profile
+	#HADOOP_HOME
+	export HADOOP_HOME=/opt/modules/hadoop-2.7.2
+	export PATH=$PATH:$HADOOP_HOME/bin
+	export PATH=$PATH:$HADOOP_HOME/sbin
+4、为相关配置文件更名：mv mapred-site.xml.template mapred-site.xml
+5、编辑hadoop-env.sh文件
+	修改：export JAVA_HOME=/opt/modules/jdk1.7.0_79
+6、编辑mapred-env.sh文件	
+	添加：export JAVA_HOME=/opt/modules/jdk1.7.0_79
+7、编辑yarn-env.sh文件	
+	添加：export JAVA_HOME=/opt/modules/jdk1.7.0_79
+8、编辑core-site.xml文件
+	<!-- 指定HDFS中NameNode的地址 -->
+	<property>
+		<name>fs.defaultFS</name>
+		<!--"hadoop101"是虚拟机网络名，也可以写成是192.168.113.xxx，9000是端口号-->
+		<value>hdfs://hadoop101:9000</value>
+	</property>
+	
+	<!-- 指定hadoop运行时产生文件的存储目录 -->
+	<property>
+		<name>hadoop.tmp.dir</name>
+		<!--该目录需要用户自己创建-->
+		<value>/opt/module/hadoop-2.7.2/data/tmp</value>
+	</property>
+
+9、编辑hdfs-site.xml文件
+	<!-- 指定HDFS副本的数量，默认为3-->
+	<property>
+		<name>dfs.replication</name>
+		<value>1</value>
+	</property>
+	
+	<!--制定SecondaryNameNode运行的机器-->
+	<property>
+        <name>dfs.namenode.secondary.http-address</name>
+        <value>hadoop104:50090</value>
+    </property>
+
+
+10、编辑yarn-site.xml文件
+	<!-- reducer获取数据的方式 -->
+	<property>
+		<name>yarn.nodemanager.aux-services</name>
+		<value>mapreduce_shuffle</value>
+	</property>
+
+	<!-- 指定YARN的ResourceManager的地址 -->
+	<property>
+		<name>yarn.resourcemanager.hostname</name>
+		<!--NameNode与ResourceManager一般不运行在同一台机器上-->
+		<value>hadoop101</value>
+	</property>
+	
+	<!-- 日志聚集功能使能 -->
+	<property>
+		<name>yarn.log-aggregation-enable</name>
+		<value>true</value>
+	</property>
+	
+	<!-- 日志保留时间设置7天 -->
+	<property>
+		<name>yarn.log-aggregation.retain-seconds</name>
+		<value>604800</value>
+	</property>
+
+
+11、编辑mapred-site.xml文件
+	<!-- 指定MapReduce运行在yarn上 -->
+	<property>
+		<name>mapreduce.framework.name</name>
+		<value>yarn</value>
+	</property>
+	
+	
+
+
+
+	
+	
+	
+	
+	
+	

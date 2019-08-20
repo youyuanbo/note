@@ -1,0 +1,26 @@
+#!/bin/bash
+#1 acquire the number of args , if no arg, exit directly
+pcount=$#
+if((pcount==0)); then
+echo no args;
+exit;
+fi
+  
+#2 Acquire the name of File
+p1=$1
+fname=`basename $p1`
+echo fname=$fname
+  
+#3 Acquire tha last absolute path of last dir
+pdir=`cd -P $(dirname $p1); pwd`
+echo pdir=$pdir
+  
+#4 Acquire the current user's name
+user=`whoami`
+  
+#5 loop
+for((host=123; host<127; host++));do
+        #echo $pdir/$fname $user@hadoop$host:$pdir
+        echo --------------- hadoop$host ----------------
+        rsync -rvl $pdir/$fname $user@hadoop$host:$pdir
+done

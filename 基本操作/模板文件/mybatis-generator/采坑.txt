@@ -1,0 +1,7 @@
+
+
+1、当存在父子maven项目时，如果在子项目中使用mybatis-generator，指定targetProject=
+“src\main\java”时，会把生成的类一级其他文件放在父项目中，如果父项目中没有任何文件夹，
+就看不到任何文件。
+
+

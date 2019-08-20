@@ -1,0 +1,35 @@
+1、在linux中使用“ifconfig”，出现“-bash: ifconfig: command not found”
+	"ifconfig"命令存放在“/user/sbin”目录下
+	1、如果在“/user/sbin”目录下，没有找到“ifconfig”:
+		1、执行：yum upgrade
+		2、yum -y install net-tools
+	2、如果在“/user/sbin”目录下，存在“ifconfig”命令：
+		1、执行：echo $PATH，查看PATH中是否包含“:/user/sbin”
+		2、如果不存在，执行：export PATH=$PATH:/user/sbin
+	
+2、在cetos7中操作防火墙
+	1、查看防火墙状态
+		firewall-cmd --state
+	2、关闭防火墙（重启后会启动）
+		systemctl stop firewalld.service 
+	3、禁止开机自启
+		systemctl disable firewalld.service 
+	4、开启防火墙
+	5、使用开机自启
+	
+3、执行xsync（分发）命令时，遇到的错误：-bash: /usr/local/bin/
+										xsync: /bin/bash^M: 
+										bad interpreter: No such file or directory
+	这是因为xsync脚本在Windows环境下编写的，Windows下的编码与linux下的编码不一样。
+	切换到Linux下编写脚本即可，或者把脚本复制到Linux系统的对应的脚本即可。
+4、在使用rsync命令时，需要两台linux系统都安装有rsync
+
+5、屏蔽“Warning: Permanently added 'hadoop123,192.168.113.123' (ECDSo the list of known hosts.”
+	进入到：cd /etc/ssh/
+	编写ssh_config: vim ssh_config
+	注释掉：UserKnownHostsFile /dev/null
+6、需要安装的包
+	net-tools
+	sync
+	
+	
