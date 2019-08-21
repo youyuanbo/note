@@ -59,7 +59,8 @@
 16、更新root密码
 	执行mysql 或者mysql -u root -p命令
 	use mysql
-	SET PASSWORD FOR 'root'@'lsocalhost' = PASSWORD('root');
+	以下两个命令，执行一个即可
+	SET PASSWORD FOR 'root'@'localhost' = PASSWORD('root');
 	update user set Password = PASSWORD('root') where user='root';
 安装完毕
 

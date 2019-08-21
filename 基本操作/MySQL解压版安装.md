@@ -62,14 +62,10 @@
 8. 设置密码
 
    ```cmd
-   mysqladmin -u root -p password
+   - mysql -u root mysql
+   - update user set authentication_string=password("newPassword") where user=”root”;
+- flush privileges;
    ```
-
-   或者使用下面的方式初始化root用户的密码：
-
-   + mysql -u root mysql
-   + update user set authentication_string=password("newPassword") where user=”root”;
-   + flush privileges;
 
 9. 关闭数据库服务器
 
